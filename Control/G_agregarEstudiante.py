@@ -27,21 +27,31 @@ class AgregarEstudiante:
                 session.close()
 
     def listarEstudiantes(self):
-            session = SessionLocal()
-            try:
-                # Trae todos los estudiantes
-                estudiantes = session.query(Estudiante).all()
-                # Opcional: puedes devolver un listado de nombres o diccionarios
-                return ["Conexión a base de datos exitosa",
-                    {
-                        "ID": e.estudianteID,
-                        "Nombre": e.nombres,
-                        "Apellido": e.apellidos,
-                        "SalonID": e.salonID
-                    } for e in estudiantes
-                ]
-            finally:
-                session.close()
+        session = SessionLocal()
+        try:
+            # Mensaje de conexión exitosa
+            mensaje = "Conexión a la base de datos establecida correctamente."
+
+            # Trae todos los estudiantes
+            estudiantes = session.query(Estudiante).all()
+
+            # Crear lista de diccionarios con los estudiantes
+            lista_estudiantes = [
+                {
+                    "ID": e.estudianteID,
+                    "Nombre": e.nombres,
+                    "Apellido": e.apellidos,
+                    "SalonID": e.salonID
+                } for e in estudiantes
+            ]
+
+            # Devolver mensaje y lista
+            return {
+                "mensaje": mensaje,
+                "estudiantes": lista_estudiantes
+            }
+        finally:
+            session.close()
     
     def agregarEstudianteSalon(self, estudianteID: int, salonID: int, profesorID: int):
         session = SessionLocal()
