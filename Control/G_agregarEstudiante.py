@@ -32,7 +32,7 @@ class AgregarEstudiante:
                 # Trae todos los estudiantes
                 estudiantes = session.query(Estudiante).all()
                 # Opcional: puedes devolver un listado de nombres o diccionarios
-                return [
+                return ["Conexión a base de datos exitosa",
                     {
                         "ID": e.estudianteID,
                         "Nombre": e.nombres,
