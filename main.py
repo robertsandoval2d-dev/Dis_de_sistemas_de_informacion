@@ -18,7 +18,7 @@ def buscar_Info_Profesor(profesorID: int):
 
 @app.get("/agregar_estudiante/listar_estudiantes")
 def listar_Estudiantes():
-    return [{"id": p.estudianteID, "nombre": p.nombres, "apellidos": p.apellidos} for p in agregarEstudiante.listarEstudiantes()]
+    return  agregarEstudiante.listarEstudiantes()
 
 @app.post("/agregar_estudiante")
 def agregar_Estudiante_Salon(estudianteID:int,salonID:int,profesorID:int):

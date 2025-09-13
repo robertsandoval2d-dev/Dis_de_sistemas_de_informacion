@@ -1,10 +1,49 @@
-#from Database import DatabaseConexion
-from Entidades.E_salon import Salon
+from sqlalchemy import Column, Integer, String,ForeignKey
+from sqlalchemy.orm import relationship
+from Database.Database import Base
 
 
-class Profesor:
+class Profesor(Base):
+    __tablename__ = "teacher"
 
-    def __init__(self,profesorID,nombres,apellidos,direccion,edad,clave):
+    profesorID = Column("teacherid",Integer, primary_key=True,index=True)
+    nombres = Column("firstnames",String(50),nullable=False)
+    apellidos = Column("lastnames",String(50),nullable=False)
+    direccion =  Column("address",String(50),nullable=False)
+    edad = Column("age",Integer,nullable=False)
+    contra = Column("pwd",String(50))
+
+    salones = relationship("Salon", back_populates="profesor")
+
+    def agregarSalon(self,salon):
+        self.salones.append(salon)
+        return salon
+    
+    def obtenerSalonProfesor(self,salonID):
+        for salon in self.salones:
+            if salon.salonID == salonID:
+                return salon
+            
+def getInfoProfesor(self):
+    # Información básica del profesor
+    info = {
+        "teacherID": self.teacherID,
+        "nombres": self.nombres,
+        "apellidos": self.apellidos,
+        "salones": []
+    }
+
+    # Salones asignados y sus estudiantes
+    for salon in self.salones:
+        info["salones"].append({
+            "salonID": salon.salonID,
+            "nombreSalon": salon.nombreSalon,
+        })
+
+    return info
+    
+
+    '''def __init__(self,profesorID,nombres,apellidos,direccion,edad,clave):
         self._profesorID = profesorID
         self.nombres = nombres
         self.apellidos = apellidos
@@ -37,37 +76,6 @@ class Profesor:
         else:
             info += "No tiene salones asignados.\n"
         
-        return info
+        return info'''
     
 
-
-'''class ProfesorDataBase:
-
-    def __init__(self,conexion: DatabaseConexion):
-        self.conexion = conexion.get_connection()
-        self.cursor = self.conexion.cursor(dictionary=True)
-
-    def getDatosProfesor(self, teacher_id):
-        query = """
-        SELECT firstNames AS Nombres, lastNames AS Apellidos
-        FROM teacher
-        WHERE teacherID = %s
-        """
-        self.cursor.execute(query, (teacher_id,))
-        return self.cursor.fetchone()  # devuelve solo una fila
-    
-    def getSalonesProfesor(self, teacher_id):
-        query = """
-        SELECT s.salonID, s.className, t.firstNames
-        FROM salon s
-        JOIN teacher t ON s.teacherID = t.teacherID
-        WHERE s.teacherID = %s
-        """
-        self.cursor.execute(query,(teacher_id,))
-        return self.cursor.fetchall()
-
-db = DatabaseConexion()
-prueba = ProfesorDataBase(db)
-print(prueba.getDatosProfesor(1000))
-print(prueba.getSalonesProfesor(1000))
-    '''
