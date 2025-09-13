@@ -21,7 +21,7 @@ class AgregarEstudiante:
                     # get_info() accede directamente a atributos de salones y estudiantes
                     return profesor.getInfoProfesor()
                 else:
-                    return None
+                    return f"No se encontró profesor con ID {profesorID}"
             finally:
                 # Cerrar sesión siempre
                 session.close()
