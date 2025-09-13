@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from Control.G_agregarEstudiante import AgregarEstudiante
 
 app = FastAPI() 
@@ -18,7 +19,12 @@ def buscar_Info_Profesor(profesorID: int):
 
 @app.get("/agregar_estudiante/listar_estudiantes")
 def listar_Estudiantes():
-    return  agregarEstudiante.listarEstudiantes()
+    try:
+        return agregarEstudiante.listarEstudiantes()
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail=f"Error en DB: {str(e)}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
 
 @app.post("/agregar_estudiante")
 def agregar_Estudiante_Salon(estudianteID:int,salonID:int,profesorID:int):
